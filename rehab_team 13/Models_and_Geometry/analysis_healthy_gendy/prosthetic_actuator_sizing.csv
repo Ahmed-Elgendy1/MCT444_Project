@@ -1,0 +1,3 @@
+motor,column,peak_abs_nm,peak_positive_nm,peak_negative_nm,peak_time_s,peak_value_nm,design_peak_nm
+Right knee motor,knee_angle_r_moment,5.77365138,3.63313569,-5.77365138,1.03,-5.77365138,8.66047707
+Right ankle motor,ankle_angle_r_moment,1.6080399,1.6080399,-0.5448438,1.47,1.6080399,2.4120598500000003
