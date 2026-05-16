@@ -50,7 +50,22 @@
     [Omar Khaled Ahmed], [2100705],
   )
   #v(1.0cm)
-  #text(size: 11pt)[Report date: 14 May 2026]
+  #text(size: 18pt)[Report date: 14 May 2026]
+]
+
+#pagebreak()
+
+#align(center)[
+  #v(8cm)
+  #text(size: 20pt, weight: "bold")[Project Resources]
+  #v(1.5cm)
+  #text(size: 14pt)[
+    *#link("https://github.com/Ahmed-Elgendy1/MCT444_Project")[GitHub Repository]*
+    
+    #v(0.8cm)
+    
+    *#link("https://drive.google.com/drive/folders/1TA3NcRduU0HnkArJ17Fov2LSGuvT0ajO")[Video Demonstrations]*
+  ]
 ]
 
 #pagebreak()
@@ -241,7 +256,40 @@ The metabolic rate remains high and fairly smooth across the jump window, which 
 
 #pagebreak()
 
-= 8. Prosthetic Model and Torque Replay
+= 8. Model Evolution and CAD Integration
+
+In this project, the musculoskeletal modeling workflow went through several iterations to integrate our custom prosthetic leg design. The complete source code, CAD files, project assets, and video demonstrations can be accessed via the links provided on the title page.
+
+== 8.1 The Healthy Model (gait2392)
+
+The baseline for our analysis was the standard OpenSim `gait2392` model. This model features a full lower-body biological structure and was used to extract the healthy reference data (kinematics, inverse dynamics, and metabolic rates) during the jumping motion.
+
+#figure(
+  image("model_photo/healthy_photo.jpeg", width: 70%),
+  caption: [The healthy `gait2392` model used as the baseline for the jumping motion analysis.],
+)
+
+== 8.2 Designed Prosthetic Model
+
+Initially, a complete prosthetic leg was designed in CAD and imported into OpenSim to replace the right below-knee anatomy. However, this complex model was ultimately not used for the final analysis. During testing, we encountered several physical and integration issues: the joint axes of rotation were incorrectly aligned, the mass and inertia properties were not properly scaled, and the gravity settings caused unrealistic dynamic behavior.
+
+#figure(
+  image("model_photo/wrong_prosthetic_model.jpeg", width: 70%),
+  caption: [The detailed CAD design of the prosthetic leg, which faced integration issues related to joint axes and physical properties.],
+)
+
+== 8.3 Simplified Prosthetic Model
+
+To overcome the issues with the detailed CAD integration, we opted for a simplified prosthetic model. In this final model, the right below-knee biological structure was removed and replaced with abstract torque-driven actuation. This allowed us to successfully isolate the mechanical demands of the jump and apply our computed torque histories for actuator sizing without the complications of the misaligned CAD geometry.
+
+#figure(
+  image("model_photo/simplified_model.jpeg", width: 70%),
+  caption: [The final simplified prosthetic model used for torque replay and actuator sizing.],
+)
+
+#pagebreak()
+
+= 9. Prosthetic Model and Torque Replay
 
 The prosthetic model was derived from the healthy gait model by replacing the right below-knee biological structure with simplified torque-driven actuation. A `PrescribedController` applies the stored torque histories for the prosthetic knee and ankle motors.
 
@@ -254,11 +302,11 @@ The comparison shows that the prosthetic actuator torques are concentrated in th
 
 #pagebreak()
 
-= 9. Actuator Sizing
+= 10. Actuator Sizing
 
 Motor sizing is one of the most important design outputs of the project. The sizing uses the peak absolute joint moments from the healthy inverse-dynamics analysis, scaled by a safety factor.
 
-== 9.1 Sizing Rule
+== 10.1 Sizing Rule
 
 The sizing rule used in the project is:
 
@@ -266,7 +314,7 @@ $ tau_"design" = "SF" times max |tau(t)| $
 
 where SF = 1.5 is the safety factor. This gives a conservative first-pass design torque for motor shortlisting before detailed gearbox and thermal analysis.
 
-== 9.2 Peak Moments and Design Targets
+== 10.2 Peak Moments and Design Targets
 
 The peak healthy right-side moments extracted from the inverse-dynamics file are:
 
@@ -284,7 +332,7 @@ The peak healthy right-side moments extracted from the inverse-dynamics file are
   [Right ankle motor], [1.608 N·m], [1.5], [2.412 N·m],
 )
 
-== 9.3 Sizing Visualization
+== 10.3 Sizing Visualization
 
 #figure(
   image("report_plots/actuator_sizing.png", width: 88%),
@@ -293,7 +341,7 @@ The peak healthy right-side moments extracted from the inverse-dynamics file are
 
 The knee motor needs substantially more torque capacity than the ankle motor. The knee absorbs and redistributes large inertial and support loads during the squat and push-off phases, while the ankle moment is smaller but sustained. In practical terms, the knee actuator will dominate the gearbox and motor envelope, while the ankle actuator can be lighter and more compact.
 
-== 9.4 Torque and Power Profiles
+== 10.4 Torque and Power Profiles
 
 #figure(
   image("report_plots/actuator_torque_power.png", width: 100%),
@@ -304,7 +352,7 @@ The power profiles show when the actuators must deliver peak mechanical output. 
 
 #pagebreak()
 
-= 10. Motor-Selection Notes
+= 11. Motor-Selection Notes
 
 The sizing result is a first-pass motor specification, not a final procurement decision. A real motor choice should consider at least four layers of validation:
 
@@ -330,7 +378,7 @@ From a design-safety standpoint, a slightly oversized motor is usually preferabl
 
 #pagebreak()
 
-= 11. Discussion
+= 12. Discussion
 
 The project workflow demonstrates that OpenSim can support a complete rehabilitation-design chain: healthy reference motion, kinematic decomposition, ground reaction force analysis, inverse-dynamics extraction, muscle activation profiling, and actuator sizing. The strongest aspect of the workflow is the way it keeps all analyses linked to the same motion window and phase structure.
 
@@ -352,7 +400,7 @@ Limitations of the current analysis include:
 
 For the next iteration, the project could include a gear-ratio study, a thermal model for long-duration use, a motion-tracking error metric between the prosthetic replay and the target motion, and validation against experimental force plate data.
 
-= 12. Conclusion
+= 13. Conclusion
 
 This report documented a complete OpenSim-based workflow for a right below-knee prosthetic study focused on vertical jumping. The jumping motion was decomposed into six biomechanically distinct phases, and each phase was characterized through joint kinematics, ground reaction forces, inverse-dynamics moments, and muscle activation patterns.
 
